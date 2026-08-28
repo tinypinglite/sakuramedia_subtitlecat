@@ -1,8 +1,9 @@
 {
   "plugin_id": "sakuramedia_subtitlecat",
   "display_name": "SakuraMedia SubtitleCat 中文字幕",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "host_api_version": 4,
   "requires_python": ">=3.10,<3.11",
-  "author": "tinypinglite"
+  "author": "tinypinglite",
+  "release_api_url": "https://api.github.com/repos/tinypinglite/sakuramedia_subtitlecat/releases/latest"
 }
