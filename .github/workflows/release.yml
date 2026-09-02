@@ -75,25 +75,8 @@ jobs:
 
           VERSION="${VERSION#v}"
           MANIFEST_VERSION="$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')"
-          PLUGIN_VERSION="$(python3 - <<'PY'
-          import ast
-
-          module = ast.parse(open("plugin.py").read())
-          print(
-              next(
-                  ast.literal_eval(node.value)
-                  for node in module.body
-                  if isinstance(node, ast.Assign)
-                  and any(
-                      isinstance(target, ast.Name) and target.id == "__version__"
-                      for target in node.targets
-                  )
-              )
-          )
-          PY
-          )"
-          if [ "$MANIFEST_VERSION" != "$VERSION" ] || [ "$PLUGIN_VERSION" != "$VERSION" ]; then
-            echo "::error::version mismatch: tag=$VERSION manifest=$MANIFEST_VERSION plugin=$PLUGIN_VERSION"
+          if [ "$MANIFEST_VERSION" != "$VERSION" ]; then
+            echo "::error::version mismatch: tag=$VERSION manifest=$MANIFEST_VERSION"
             exit 1
           fi
 

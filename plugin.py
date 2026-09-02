@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from src.plugins import HOST_API_VERSION, PluginContext, PluginRegistration
 
 from .jobs import build_jobs
 from .settings import SubtitleCatSettings
 
-__version__ = "0.2.2"
+__version__ = json.loads(
+    Path(__file__).with_name("manifest.json").read_text(encoding="utf-8")
+)["version"]
 PLUGIN_ID = "sakuramedia_subtitlecat"
 DISPLAY_NAME = "SakuraMedia SubtitleCat 中文字幕"
 
