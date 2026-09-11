@@ -65,3 +65,24 @@ def test_fetch_rejects_html_instead_of_importing_it_as_subtitle() -> None:
         transport=httpx.MockTransport(handler),
     ) as client, pytest.raises(SubtitleCatError, match="不是有效的 SRT"):
         client.fetch_chinese_subtitles("SSNI-888")
+
+
+@pytest.mark.parametrize("number,other", [("072625_001", "072625-001"), ("072625-001", "072625_001"), ("1_22", "1-22")])
+@pytest.mark.parametrize("include_match", [False, True])
+def test_numeric_subtitles_only_fetch_exact_movie(number, other, include_match):
+    def handler(request):
+        if request.url.path == "/index.php":
+            assert request.url.params["search"] == number
+            numbers = [other, other.replace("-", "").replace("_", "")]
+            if include_match:
+                numbers.append(number)
+            links = "".join(f'<a href="/subtitles/{n}.html">{n}</a>' for n in numbers)
+            return httpx.Response(200, text=f'<div class="subtitles">{links}</div>')
+        if request.url.path == f"/subtitles/{number}.html":
+            return httpx.Response(200, text=DETAIL_HTML)
+        assert request.url.path == "/download/zh.srt"
+        return httpx.Response(200, text=SRT_CONTENT)
+
+    with SubtitleCatClient(SubtitleCatSettings(request_retries=0), transport=httpx.MockTransport(handler)) as client:
+        result = client.fetch_chinese_subtitles(number)
+    assert result == ([SRT_CONTENT.encode("utf-8")] if include_match else [])

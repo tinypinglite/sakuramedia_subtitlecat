@@ -17,7 +17,7 @@ CHINESE_DOWNLOAD_ANCHOR_ID = "download_zh-CN"
 USER_AGENT = "SakuraMedia-SubtitleCat/0.1"
 
 _MOVIE_NUMBER_PATTERN = re.compile(
-    r"(?<![A-Z0-9])((?:FC2(?:[-_ ]?PPV)?|[A-Z]{2,6})[-_ ]?\d{2,6})(?!\d)",
+    r"(?<![A-Z0-9])((?:FC2(?:[-_ ]?PPV)?|[A-Z]{2,6})[-_ ]?\d{2,6}|\d+[-_]\d+)(?!\d)",
     re.IGNORECASE,
 )
 
@@ -98,9 +98,12 @@ def _collect_links(
 
 
 def normalize_movie_number(value: str) -> str:
-    """统一人工输入和链接中的番号分隔符。"""
+    """统一人工输入和链接中的番号，纯数字番号保留分隔符。"""
 
-    normalized = re.sub(r"[-_\s]+", "-", value.strip().upper())
+    value = value.strip().upper()
+    if re.fullmatch(r"\d+[-_]\d+", value):
+        return value
+    normalized = re.sub(r"[-_\s]+", "-", value)
     if normalized.startswith("FC2PPV"):
         suffix = normalized.removeprefix("FC2PPV").lstrip("-")
         normalized = f"FC2-PPV-{suffix}" if suffix else "FC2-PPV"
@@ -108,6 +111,8 @@ def normalize_movie_number(value: str) -> str:
 
 
 def _numbers_equal(left: str, right: str) -> bool:
+    if re.fullmatch(r"\d+[-_]\d+", left) or re.fullmatch(r"\d+[-_]\d+", right):
+        return left == right
     return left == right or left.replace("-", "") == right.replace("-", "")
 
 
