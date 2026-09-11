@@ -8,7 +8,7 @@ class SubtitleCatSettings(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    request_timeout_seconds: float = Field(default=20.0, gt=0, le=120)
-    request_retries: int = Field(default=2, ge=0, le=3)
+    request_timeout_seconds: float = Field(default=20.0, gt=0, le=120, title="请求超时（秒）")
+    request_retries: int = Field(default=2, ge=0, le=3, title="请求重试次数")
     # 已经抓过的影片，发布时间达到这个月数后不再由定时任务重复抓取。
-    release_age_months: int = Field(default=3, ge=1, le=120)
+    release_age_months: int = Field(default=3, ge=1, le=120, title="定时补抓影片月龄上限")

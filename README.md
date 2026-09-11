@@ -43,7 +43,7 @@ uv run python -m src.start.commands aps fetch-subscribed-subtitlecat
 
 ## 配置
 
-在前端「系统设置 → 插件」中点击本插件，按 JSON 编辑并保存：
+在前端「系统设置 → 插件」中点击本插件，通过配置表单编辑并保存。配置对象示例：
 
 ```json
 {
