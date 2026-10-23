@@ -58,3 +58,9 @@ uv run python -m src.start.commands aps fetch-subscribed-subtitlecat
 `release_age_months` 控制定时任务的停止窗口：影片已经成功抓取过，且发布时间早于或等于当前时间往前推 N 个日历月时跳过；未抓取过、没有发布时间或仍在窗口内的影片继续处理。
 
 定时任务默认每天 03:00 执行；如需覆盖执行时间，使用宿主插件任务的 cron 配置机制。
+
+## License
+
+本项目采用 [PolyForm Noncommercial License 1.0.0](./LICENSE)，仅允许非商业用途。
+
+Copyright (C) 2026 tinypinglite
