@@ -1,7 +1,7 @@
 {
   "plugin_id": "sakuramedia_subtitlecat",
   "display_name": "SakuraMedia SubtitleCat 中文字幕",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "host_api_version": 4,
   "settings_model": "SubtitleCatSettings",
   "requires_python": ">=3.10,<3.11",
